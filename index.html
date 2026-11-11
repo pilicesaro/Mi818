@@ -131,11 +131,13 @@ h2 .serif{color:var(--terra);font-size:1.12em}
 label{display:grid;gap:6px;font:500 14px Jost;color:var(--muted)}
 input{width:100%;min-width:0;font:16px Jost;padding:13px 15px;border:1.5px solid var(--arena);border-radius:12px;background:#fff;color:var(--tinta);transition:border-color .2s,box-shadow .2s}
 input:focus{outline:0;border-color:var(--terra);box-shadow:0 0 0 4px rgba(194,129,75,.18)}
-.code-in{font:800 28px Montserrat!important;letter-spacing:.12em;text-align:center}
+.code-in{font:800 20px/1.2 Montserrat!important;letter-spacing:.12em;text-align:center;padding:12px 10px!important}
 .drop{position:relative;border:2px dashed var(--terra);border-radius:18px;min-height:170px;display:grid;place-items:center;text-align:center;color:var(--terraO);cursor:pointer;background:#fff;overflow:hidden;transition:background .2s}
 .drop:hover{background:#FFF9F0}
 .drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.drop svg{width:34px;height:34px;margin:0 auto 6px}
+.drop svg{width:28px;height:28px;flex:none}
+.drop .dt span{text-align:left}
+.drop .dt{display:inline-flex;align-items:center;justify-content:center;gap:12px;line-height:1.2;padding:0 16px}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--tinta)}
 .check input{width:auto;margin-top:4px;accent-color:var(--terra)}
 .note{font-size:13px;color:var(--muted)}
@@ -330,7 +332,7 @@ footer .logo{font:800 44px Montserrat;color:var(--crema);letter-spacing:-.03em}
   </div>
   <form class="form rv d1" id="form" onsubmit="return submitHome(event)">
     <h3>Tu hogar, <span class="serif">tu código.</span></h3>
-    <div class="drop" id="drop" onclick="document.getElementById('file').click()"><div id="dropTxt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16l4-4 4 4 3-3 5 5M4 6h16v14H4z"/><circle cx="15.5" cy="9.5" r="1.5"/></svg>Tocá para elegir la foto de tu living</div></div>
+    <div class="drop" id="drop" onclick="document.getElementById('file').click()"><div id="dropTxt" class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16l4-4 4 4 3-3 5 5M4 6h16v14H4z"/><circle cx="15.5" cy="9.5" r="1.5"/></svg><span>Tocá para elegir la foto de tu living</span></div></div>
     <input type="file" id="file" accept="image/*" hidden>
     <label>Nombre del hogar<input id="fName" required maxlength="40" placeholder="Ej.: El living de los domingos"></label>
     <div style="display:grid;grid-template-columns:130px 1fr;gap:12px">
@@ -421,13 +423,13 @@ function renderMap(){const map=$('#map');map.querySelectorAll('.pin').forEach(p=
  const arr=Object.values(by);const topCode=[...arr].sort((a,b)=>b.total-a.total)[0].code;
  arr.forEach(p=>{const el=document.createElement('div');el.className='pin'+(p.code===topCode?' top':'')+(p.mine?' mine':'');el.style.left=p.x+'%';el.style.top=p.y+'%';el.innerHTML=`<div class="tip">${p.city} · ${p.n} hogar${p.n>1?'es':''}</div><span>${p.code}</span><i></i>`;map.appendChild(el)})}
 homes.forEach(h=>{const c=coords[h.code];h.x=c[0];h.y=c[1]});
-let imgData=null;
+let imgData=null;const DROP0=document.getElementById('drop').innerHTML;
 $('#file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{imgData=r.result;$('#drop').innerHTML=`<img src="${imgData}" alt="Vista previa">`};r.readAsDataURL(f)});
 function submitHome(e){e.preventDefault();const code=$('#fCode').value.trim();if(!/^\d{3}$/.test(code)){toast('El código de área tiene 3 números.');return false}
  const pos=coords[code]||[25+Math.random()*55,25+Math.random()*45];
  homes.unshift({id:Date.now(),name:$('#fName').value.trim(),code,city:$('#fCity').value.trim(),votes:0,x:pos[0],y:pos[1],img:imgData||IMG.recibir,mine:true});
  filter="Todos";renderFilters();renderGrid();renderRank();renderMap();e.target.reset();imgData=null;
- $('#drop').innerHTML='<div>Tocá para elegir la foto de tu living</div>';toast('¡Listo! Tu 818 ya está en la galería y en el mapa.');document.getElementById('hogares').scrollIntoView({behavior:'smooth'});return false}
+ $('#drop').innerHTML=DROP0;toast('¡Listo! Tu 818 ya está en la galería y en el mapa.');document.getElementById('hogares').scrollIntoView({behavior:'smooth'});return false}
 // nav + reveal
 const nav=$('#nav');const onS=()=>nav.classList.toggle('solid',scrollY>innerHeight*.6);addEventListener('scroll',onS,{passive:true});onS();
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});

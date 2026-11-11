@@ -13,7 +13,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--crema);color:var(--tinta);font-family:Jost,system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:70;opacity:.16;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .12 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body{position:relative}
+body::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:70;opacity:.16;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .12 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 img{display:block;max-width:100%}
 a{color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -45,7 +46,7 @@ h2 .serif{color:var(--terra)}
 .nav nav a{color:var(--crema);text-decoration:none;font-weight:500;font-size:15px;margin-left:26px;opacity:.9;transition:color .35s}
 .nav nav a:hover{opacity:1}
 .nav .btn{padding:10px 20px;font-size:13px}
-.nav.solid{top:0;padding-top:env(safe-area-inset-top,0px);background:rgba(243,233,213,.97);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(30,26,22,.08)}
+.nav.solid{top:0;padding-top:env(safe-area-inset-top,0px);background-color:#F3E9D5;box-shadow:0 1px 0 rgba(30,26,22,.08)}
 .nav.solid .logo,.nav.solid nav a{color:var(--tinta)}
 
 /* hero */
@@ -239,6 +240,7 @@ footer .logo{font-size:44px}
 .gate p{opacity:.85;margin-bottom:28px}
 .gate .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .gate.off{opacity:0;visibility:hidden}
+.gate.gone{display:none}
 .gate small{display:block;margin-top:34px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.65}
 
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140px);background:var(--tinta);color:var(--crema);padding:14px 22px;border-radius:14px;z-index:80;transition:transform .4s cubic-bezier(.2,.7,.2,1);max-width:90vw;box-shadow:0 14px 30px rgba(0,0,0,.25)}
@@ -429,7 +431,7 @@ const homes=[
 const coords={"305":[82.6,86.3],"512":[45.9,84.3],"212":[89.5,30],"213":[9.6,58.5],"818":[7.6,52.5],"702":[15.6,47.5],"312":[62,33],"415":[4,40],"617":[94,22],"206":[10,8],"303":[33,42],"404":[74,66],"602":[19,62],"713":[51,84],"214":[47,70],"305b":[82,86]};
 const voted=new Set();let filter="Todos";
 const $=s=>document.querySelector(s);
-function enter(){$('#gate').classList.add('off');document.body.style.overflow=''}
+function enter(){const g=$('#gate');g.classList.add('off');document.body.style.overflow='';setTimeout(()=>g.classList.add('gone'),650)}
 function noAge(){$('#gate .box').innerHTML='<div class="logo"><svg viewBox="0 0 412 244" fill="currentColor" role="img" aria-label="818"><use href="#l818"/></svg></div><h2>Volvé cuando tengas 21.</h2><p>Este sitio es solo para mayores de edad.</p>'}
 document.body.style.overflow='hidden';
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3200)}
